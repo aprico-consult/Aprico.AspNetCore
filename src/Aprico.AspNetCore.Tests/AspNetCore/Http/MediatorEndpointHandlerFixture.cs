@@ -23,6 +23,7 @@ using Aprico.Moq.Extensions;
 using AutoFixture.AutoMoq;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
 
 namespace Aprico.AspNetCore.Http;
@@ -42,6 +43,8 @@ public class MediatorEndpointHandlerFixture
 		mediator.AsMock()
 			.Verify(m => m.Send(command, It.IsAny<CancellationToken>()));
 		status.Should()
+			.BeOfType<Created<int>>();
+		status.Should()
 			.BeEquivalentTo(TypedResults.Created((string?) null, result));
 	}
 
@@ -53,6 +56,8 @@ public class MediatorEndpointHandlerFixture
 
 		mediator.AsMock()
 			.Verify(m => m.Send(command, It.IsAny<CancellationToken>()));
+		status.Should()
+			.BeOfType<NoContent>();
 		status.Should()
 			.Be(TypedResults.NoContent());
 	}
