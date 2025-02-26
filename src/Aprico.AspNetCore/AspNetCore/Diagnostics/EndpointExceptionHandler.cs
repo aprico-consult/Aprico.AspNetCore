@@ -30,27 +30,23 @@ namespace Aprico.AspNetCore.Diagnostics;
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Public API.")]
 public class EndpointExceptionHandler : IExceptionHandler
 {
+	private static ValueTask<bool> HandleExceptionWithStatusCode(HttpContext context, int statusCode)
+	{
+		context.Response.StatusCode = statusCode;
+		return ValueTask.FromResult(result: true); // true to indicate that this exception has been handled
+	}
+
 	#region IExceptionHandler Members
 
 	[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Provided by ASP.NET Core.")]
 	public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
 	{
-		switch (exception)
-		{
-			case ValidationException:
-				httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-				break;
-			case EntityNotFoundException:
-				httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-				break;
-			case InvalidOperationException:
-				httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-				break;
-			default:
-				return ValueTask.FromResult(result: false); // return false to continue with the default behavior
-		}
-
-		return ValueTask.FromResult(result: true); // return true to indicate that this exception has been handled
+		return exception switch {
+			ValidationException => HandleExceptionWithStatusCode(httpContext, StatusCodes.Status400BadRequest),
+			EntityNotFoundException => HandleExceptionWithStatusCode(httpContext, StatusCodes.Status404NotFound),
+			InvalidOperationException => HandleExceptionWithStatusCode(httpContext, StatusCodes.Status500InternalServerError),
+			_ => ValueTask.FromResult(result: false) // false to let the exception handler middleware continue looking for another handler
+		};
 	}
 
 	#endregion
