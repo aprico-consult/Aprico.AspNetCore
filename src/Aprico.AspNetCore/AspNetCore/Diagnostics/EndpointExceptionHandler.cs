@@ -21,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Aprico.Ddd;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
@@ -36,6 +37,9 @@ public class EndpointExceptionHandler : IExceptionHandler
 	{
 		switch (exception)
 		{
+			case ValidationException:
+				httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+				break;
 			case EntityNotFoundException:
 				httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 				break;

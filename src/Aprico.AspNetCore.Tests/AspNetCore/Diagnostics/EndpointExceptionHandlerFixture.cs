@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Aprico.AutoFixture.Xunit2;
 using Aprico.Ddd;
 using AutoFixture.AutoMoq;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
 namespace Aprico.AspNetCore.Diagnostics;
@@ -42,6 +43,20 @@ public abstract class EndpointExceptionHandlerFixture
 
 			result.Should()
 				.BeFalse();
+		}
+
+		[Theory]
+		[AutoData<AutoMoqCustomization>]
+		public async Task ReturnsStatus400BadRequestWhenValidationException(EndpointExceptionHandler handler, ValidationException exception)
+		{
+			HttpContext httpContext = new DefaultHttpContext();
+
+			var result = await handler.TryHandleAsync(httpContext, exception, CancellationToken.None);
+
+			result.Should()
+				.BeTrue();
+			httpContext.Response.StatusCode.Should()
+				.Be(StatusCodes.Status400BadRequest);
 		}
 
 		[Theory]
