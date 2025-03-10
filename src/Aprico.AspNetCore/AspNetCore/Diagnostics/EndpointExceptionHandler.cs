@@ -27,6 +27,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Aprico.AspNetCore.Diagnostics;
 
+// TODO extract in another assembly: Aprico.Ddd,AspNetCore and add an ExceptionFilter as well, not just handler
+
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Public API.")]
 public class EndpointExceptionHandler : IExceptionHandler
 {
