@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Aprico.AspNetCore.Http;
 
+// TODO investigate why its usage in client assemblies entails CSC: Warning AD0001 : Analyzer 'Microsoft.AspNetCore.Analyzers.RouteHandlers.RouteHandlerAnalyzer' threw an exception of type 'System.IndexOutOfRangeException' with message 'Index was outside the bounds of the array.'.
+
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Provided by dependency injection.")]
 [SuppressMessage("ReSharper", "MemberCanBeInternal", Justification = "Public API.")]
 public static class MediatorEndpointHandler
