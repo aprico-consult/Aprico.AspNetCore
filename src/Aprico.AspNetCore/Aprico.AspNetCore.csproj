@@ -35,6 +35,7 @@
    <ItemGroup>
       <PackageReference Include="Aprico.Persistence.Abstractions"/>
       <PackageReference Include="MediatR"/>
+      <PackageReference Include="Microsoft.SourceLink.GitHub"/>
    </ItemGroup>
 
 </Project>
