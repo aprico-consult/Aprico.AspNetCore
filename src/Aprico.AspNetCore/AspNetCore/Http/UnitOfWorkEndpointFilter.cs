@@ -20,7 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Aprico.AspNetCore.Http.Extensions;
-using Aprico.Persistence.Abstractions;
+using Aprico.Persistence;
 using Microsoft.AspNetCore.Http;
 
 namespace Aprico.AspNetCore.Http;
